@@ -1,7 +1,26 @@
+# Библиотеки
 https://react-bootstrap.github.io/getting-started/introduction/
 
 https://mui.com/material-ui/getting-started/overview/
+
 https://mui.com/material-ui/material-icons/?query=cloc
+
+# Гайды
+
+https://ru.reactjs.org/tutorial/tutorial.html - стартовый туториал по Реакту
+
+# Команды
+```
+mkdir src/components
+mkdir src/components/common
+
+touch src/components/pages/about/index.js
+touch src/components/pages/about/AboutPage.js
+
+```
+
+
+
 
 
 # Getting Started with Create React App
