@@ -31,3 +31,10 @@ https://create-react-app.dev/docs/adding-a-sass-stylesheet
 
 
 https://www.npmjs.com/package/classnames
+
+
+# Работа с формами
+
+https://reactjs.org/docs/forms.html
+
+https://developer.mozilla.org/ru/docs/Web/API/Node

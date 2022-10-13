@@ -2,6 +2,7 @@ import React from 'react';
 import {Autocomplete, TextField} from '@mui/material';
 import Alert from 'react-bootstrap/Alert';
 import classes from './MainPage.module.scss';
+import ToDoList from '../../ToDoList';
 
 export default function MainPage() {
     const variants = ["First", "Second", "Fruit"];
@@ -19,6 +20,7 @@ export default function MainPage() {
               <Alert key={'danger'} variant={'danger'} className='m-3'>
                   This is a {'danger'} alert—check it out!
               </Alert>
+            <ToDoList/>
         </div>
     )
 }
