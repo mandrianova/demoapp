@@ -38,3 +38,7 @@ https://www.npmjs.com/package/classnames
 https://reactjs.org/docs/forms.html
 
 https://developer.mozilla.org/ru/docs/Web/API/Node
+
+# Хуки
+
+https://ru.reactjs.org/docs/hooks-intro.html

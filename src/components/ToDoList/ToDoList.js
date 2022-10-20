@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import ToDoElement from './ToDoElement';
 
 const initialData = [
@@ -9,7 +9,8 @@ const initialData = [
     {id: 5, content: "Task 5", completed: false},
 ]
 
-export default function ToDoList() {
+export default function ToDoList({changeAlert}) {
+    // const {changeAlert} = props
     const [tasks, setTasks] = useState(initialData);
     const [newTask, setNewTask] = useState({content: "", completed: false})
     const handleChange = (event) => {
@@ -26,12 +27,34 @@ export default function ToDoList() {
     const removeTask = (taskID) => {
         setTasks(tasks.filter(task => task.id !== taskID))
     }
+    const toggleCompleteTask = (taskID) => {
+        const changedTasks = tasks.map(task => {
+            if (task.id === taskID) {
+                return {...task, completed: !task.completed}
+            }
+            return task
+        })
+        setTasks(changedTasks)
+    }
+    useEffect(() => {
+        if (newTask.content.length < 8 && newTask.content.length > 0) {
+            changeAlert("Слишком короткая задача!", "danger")
+        } else {
+            changeAlert("")
+        }
+    }, [newTask, changeAlert])
+    useEffect(() => {
+        // if (tasks.length !== initialData.length) {
+        //     changeAlert("Изменилось количество задач")
+        // }
+        // setTasks([]) # Нельзя так делать, потому что уходим в бесконечный цикл
+    }, [tasks, changeAlert])
     return (<div>
         <form onSubmit={handleSubmit}>
             <input type="text" id="content" onChange={handleChange} value={newTask.content}/>
             <button type="submit">Add</button>
         </form>
-        {tasks.map(task => <ToDoElement task={task} key={task.id} removeTask={removeTask}/>)}
+        {tasks.map(task => <ToDoElement task={task} key={task.id} removeTask={removeTask} toggleCompleteTask={toggleCompleteTask}/>)}
     </div>)
 }
 
