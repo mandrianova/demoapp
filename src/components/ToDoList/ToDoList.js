@@ -1,17 +1,12 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import ToDoElement from './ToDoElement';
+import {useLoaderData, Form} from 'react-router-dom';
 
-const initialData = [
-    {id: 1, content: "Task 1", completed: false},
-    {id: 2, content: "Task 2", completed: false},
-    {id: 3, content: "Task 3", completed: false},
-    {id: 4, content: "Task 4", completed: false},
-    {id: 5, content: "Task 5", completed: false},
-]
 
-export default function ToDoList({changeAlert}) {
-    // const {changeAlert} = props
-    const [tasks, setTasks] = useState(initialData);
+
+export default function ToDoList() {
+    const ToDoData = useLoaderData()
+    const [tasks, setTasks] = useState(ToDoData);
     const [newTask, setNewTask] = useState({content: "", completed: false})
     const handleChange = (event) => {
         console.log(tasks)
@@ -36,24 +31,16 @@ export default function ToDoList({changeAlert}) {
         })
         setTasks(changedTasks)
     }
-    useEffect(() => {
-        if (newTask.content.length < 8 && newTask.content.length > 0) {
-            changeAlert("Слишком короткая задача!", "danger")
-        } else {
-            changeAlert("")
-        }
-    }, [newTask, changeAlert])
-    useEffect(() => {
-        // if (tasks.length !== initialData.length) {
-        //     changeAlert("Изменилось количество задач")
-        // }
-        // setTasks([]) # Нельзя так делать, потому что уходим в бесконечный цикл
-    }, [tasks, changeAlert])
+
     return (<div>
         <form onSubmit={handleSubmit}>
             <input type="text" id="content" onChange={handleChange} value={newTask.content}/>
             <button type="submit">Add</button>
         </form>
+        <Form method="post">
+            <input type="text" name="content" defaultValue=""/>
+            <button type="submit">Add</button>
+        </Form>
         {tasks.map(task => <ToDoElement task={task} key={task.id} removeTask={removeTask} toggleCompleteTask={toggleCompleteTask}/>)}
     </div>)
 }

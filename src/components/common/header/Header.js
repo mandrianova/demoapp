@@ -16,7 +16,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 
 export default function Header(props) {
     console.log(props)
-    const navItems = ['Home', 'About', 'Contact'];
+    const navItems = [{name: "Home", href: "/"}, {name: "About", href: "/about"}];
     const drawerWidth = 240;
     const [mobileOpen, setMobileOpen] = React.useState(false);
     const { window } = props;
@@ -34,10 +34,10 @@ export default function Header(props) {
           </Typography>
           <Divider />
           <List>
-            {navItems.map((item) => (
-              <ListItem key={item} disablePadding>
-                <ListItemButton sx={{ textAlign: 'center' }}>
-                  <ListItemText primary={item} />
+            { navItems.map((item) => (
+              <ListItem key={item.name} disablePadding>
+                <ListItemButton sx={{ textAlign: 'center' }} href={ item.href }>
+                  <ListItemText primary={item.name} />
                 </ListItemButton>
               </ListItem>
             ))}
@@ -66,8 +66,8 @@ export default function Header(props) {
               </Typography>
               <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
                 {navItems.map((item) => (
-                  <Button key={item} sx={{ color: '#fff' }}>
-                    {item}
+                  <Button key={item.name} sx={{ color: '#fff' }} href={item.href}>
+                    {item.name}
                   </Button>
                 ))}
               </Box>
