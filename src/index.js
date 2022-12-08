@@ -9,13 +9,18 @@ import {ThemeProvider} from '@mui/material';
 
 import theme from './theme';
 import router from './router';
+import APIContext from './apiContext';
+import ToDoService from './ToDoService';
 
+const api = new ToDoService();
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
       <ThemeProvider theme={theme}>
-        <RouterProvider router={router} />
+          <APIContext.Provider value={api}>
+              <RouterProvider router={router} />
+          </APIContext.Provider>
       </ThemeProvider>
   </React.StrictMode>
 );

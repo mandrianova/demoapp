@@ -1,47 +1,50 @@
-import React, {useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import ToDoElement from './ToDoElement';
-import {useLoaderData, Form} from 'react-router-dom';
+import APIContext from '../../apiContext';
+import {useOutletContext} from 'react-router-dom';
 
 
 
 export default function ToDoList() {
-    const ToDoData = useLoaderData()
-    const [tasks, setTasks] = useState(ToDoData);
-    const [newTask, setNewTask] = useState({content: "", completed: false})
+    const [tasks, setTasks] = useState([]);
+    const {loading, setLoading} = useOutletContext();
+    const api = useContext(APIContext);
+    useEffect(() => {
+        if (loading) {
+            api.getToDoList().then(result => {
+                setTasks(result.slice(0, 10))
+                setLoading(false)
+                console.log(result)
+            })
+        }
+
+    }, [setTasks, api, loading, setLoading])
+
+    const [newTask, setNewTask] = useState({title: "", completed: false})
     const handleChange = (event) => {
-        console.log(tasks)
-        setNewTask({...newTask, content: event.target.value})
+        setNewTask({...newTask, title: event.target.value})
     }
     const handleSubmit = (event) => {
         event.preventDefault();
-        console.log(event)
-        const newID = Math.max(...tasks.map(task => task.id)) + 1
-        setTasks([...tasks, {...newTask, id: newID}])
-        setNewTask({content: "", completed: false})
-    }
-    const removeTask = (taskID) => {
-        setTasks(tasks.filter(task => task.id !== taskID))
-    }
-    const toggleCompleteTask = (taskID) => {
-        const changedTasks = tasks.map(task => {
-            if (task.id === taskID) {
-                return {...task, completed: !task.completed}
-            }
-            return task
+        setLoading(true)
+        api.addTodo(newTask).then(result => {
+            console.log(result)
+            setNewTask({title: "", completed: false})
         })
-        setTasks(changedTasks)
     }
+    const spinner = (
+        <div className="spinner-border m-5" role="status">
+            <span className="sr-only"></span>
+        </div>
+    )
 
-    return (<div>
+    return (
+        <div>
         <form onSubmit={handleSubmit}>
-            <input type="text" id="content" onChange={handleChange} value={newTask.content}/>
+            <input type="text" id="title" onChange={handleChange} value={newTask.title}/>
             <button type="submit">Add</button>
         </form>
-        <Form method="post">
-            <input type="text" name="content" defaultValue=""/>
-            <button type="submit">Add</button>
-        </Form>
-        {tasks.map(task => <ToDoElement task={task} key={task.id} removeTask={removeTask} toggleCompleteTask={toggleCompleteTask}/>)}
+            {loading ? spinner : tasks.map(task => <ToDoElement task={task} key={task.id}/>)}
     </div>)
 }
 
